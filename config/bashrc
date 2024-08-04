@@ -1,0 +1,66 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
+
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
+    then
+        PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+# User specific aliases and functions
+if [ -d ~/.bashrc.d ]; then
+    for rc in ~/.bashrc.d/*; do
+        if [ -f "$rc" ]; then
+            . "$rc"
+        fi
+    done
+fi
+
+if [ -d ~/.config/bash ]; then
+    for rc in ~/.config/bash/*; do
+        if [ -f "$rc" ]; then
+            . "$rc"
+        fi
+    done
+fi
+
+unset rc
+
+# Use vi as default editor
+export VISUAL="vi"
+
+# Configure bash history
+shopt -s direxpand histappend cmdhist
+HISTCONTROL="ignoreboth"
+HISTIGNORE="clear:exit:reset:reboot:poweroff:history:systemctl reboot:systemctl poweroff"
+HISTTIMEFORMAT="[%F %T] "
+HISTSIZE=-1
+HISTFILESIZE=-1
+
+# Configure location of history file
+if [ ! -d $HOME/.local/state/bash ]; then
+    mkdir -p $HOME/.local/state/bash
+fi
+export HISTFILE=$HOME/.local/state/bash/history
+
+# ls alias - Fedora has some defaults set in /etc/profile.d/colorls.sh
+alias ls="ls --color=auto" 2>/dev/null
+alias la="ls -A --group-directories-first" 2>/dev/null
+alias ll="ls -l -A --human-readable --group-directories-first --classify" 2>/dev/null
+alias li="ll | grep -i" 2>/dev/null # quick case-insensitive partial filename search
+
+# grep color - Use Fedora defaults set in /etc/profile.d/colorgrep.sh
+alias grep='grep --color=auto' 2>/dev/null
+alias egrep='egrep --color=auto' 2>/dev/null
+alias fgrep='fgrep --color=auto' 2>/dev/null
+
+# Configure prompt
+export PS1="\[\e[01;34m\]\u\[\e[m\]@\h \[\e[32m\]\w\[\e[m\]> "
