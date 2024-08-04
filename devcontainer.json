@@ -1,0 +1,17 @@
+{
+    "name": "CS61a"
+    "build": {
+        "dockerfile": "Containerfile"
+    },
+    "containerUser": "vscode", // Not needed as user is added to Containerfile
+    "workspaceMount": "src=${localWorkspaceFolder},dst=/workspace,type=bind,relabel=shared",
+    "workspaceFolder": "/workspace",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance"
+            ]
+        }
+    }
+}
